@@ -6,6 +6,7 @@ use App\Client\Shopify;
 use App\Models\Customers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redirect;
 
 class CustomersController extends Controller
 {
@@ -15,9 +16,15 @@ class CustomersController extends Controller
         $this->shopifyClient = $shopifyClient;
     }
 
+    
     public function appDashboard() {
         $allCustomers = Customers::all()->sortByDesc("created_at");
         return view('welcome', compact('allCustomers'));
+    }
+    
+    public function addShopifyCustomer(){
+        Log::info("here...");
+        dd("yes here...");
     }
 
     /**
@@ -71,7 +78,8 @@ class CustomersController extends Controller
         // dd($dataPayLoad);
         Customers::create($dataPayLoad);
 
-        $this->shopifyClient->saveCustomer($dataPayLoad);
+        // $this->shopifyClient->saveCustomer($dataPayLoad);
+        return Redirect::route('shopify-customer-create')->with('data', $dataPayLoad);
     }
 
     /**

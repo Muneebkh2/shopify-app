@@ -13,9 +13,12 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', 'App\Http\Controllers\CustomersController@appDashboard')
-->middleware(['verify.shopify'])->name('home');
+Route::middleware(['verify.shopify'])->group(function () {
+    Route::get('/', 'App\Http\Controllers\CustomersController@appDashboard')->name('home');
+    Route::get('/shopify/customer/create', 'App\Http\Controllers\CustomersController@addShopifyCustomer')->name('shopify-customer-create');
+});
+// Route::get('/', 'App\Http\Controllers\CustomersController@appDashboard')
+// ->middleware(['verify.shopify'])->name('home');
 
 // Route::get('/', function () {
 //     return view('welcome');
