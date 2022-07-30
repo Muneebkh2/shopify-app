@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\Log;
 
 class CustomersController extends Controller
 {
+    public function appDashboard() {
+        $allCustomers = Customers::all()->sortByDesc("created_at");
+        return view('welcome', compact('allCustomers'));
+    }
+
     /**
      * Display a listing of the resource.
      *
