@@ -15,7 +15,7 @@ class CustomersController extends Controller
      */
     public function index()
     {
-        //
+        return Customers::all()->sortByDesc("created_at");
     }
 
     /**
@@ -38,8 +38,10 @@ class CustomersController extends Controller
     {
         Log::info('from store method..');
         Log::info('Request Array:', $request->all());
+
         $rawRequestData = json_decode($request->get('rawRequest'), true);
         Log::debug('rawRequestData Array:', [$rawRequestData]);
+        
         $dataPayLoad = [
             "first_name" => $rawRequestData['q3_name']['first'],
             "last_name" => $rawRequestData['q3_name']['last'],
@@ -53,8 +55,9 @@ class CustomersController extends Controller
             "zip_code" => $rawRequestData['q8_address']['postal']
         ];
         Log::debug('DataPayLoad: Array:', [$dataPayLoad]);
-        
-        // return;
+
+        // dd($dataPayLoad);
+        return Customers::create($dataPayLoad);
     }
 
     /**
