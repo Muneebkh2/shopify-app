@@ -2,42 +2,67 @@
 
 namespace App\Client;
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
+
+use Shopify\Clients\Graphql;
+use Shopify\Clients\Rest;
+
+class Shopify
+{
+    public static function graphql(): Graphql
+    {
+        return new Graphql(self::getStoreUrl());
+    }
+
+    public static function rest(): Rest
+    {
+        return new Rest(self::getStoreUrl());
+    }
+
+    private static function getStoreUrl(): string
+    {
+        return config('shopify.store_url');
+    }
+}
+
+
+
+
+// use Illuminate\Support\Facades\Auth;
+// use Illuminate\Support\Facades\Log;
 // use Shopify\Rest\Admin2022_07\Customer;
 // use Shopify\Utils;
 
-class Shopify {
-    public function saveCustomer($customerData) {
+// class Shopify {
+//     public function saveCustomer($customerData) {
 
-        $shop = Auth::user();
+        // $shop = Auth::user();
 
-        $themes = $shop->api()->rest('GET', '/admin/themes.json');
+        // $shop->api()->rest('POST', '/admin/api/2022-07/customers.json', $customerData);
 
         // get active theme id
-        $activeThemeId = "";
-        foreach($themes['body']->container['themes'] as $theme){
-            if($theme['role'] == "main"){
-                $activeThemeId = $theme['id'];
-                dd($activeThemeId);
-            }
-        }
+        // $activeThemeId = "";
+        // foreach($themes['body']->container['themes'] as $theme){
+        //     if($theme['role'] == "main"){
+        //         $activeThemeId = $theme['id'];
+        //         dd($activeThemeId);
+        //     }
+        // }
 
-        $snippet = "Your snippet code updated";
+        // $snippet = "Your snippet code updated";
 
-        // Data to pass to our rest api request
-        $array = array('asset' => array('key' => 'snippets/codeinspire-wishlist-app.liquid', 'value' => $snippet));
+        // // Data to pass to our rest api request
+        // $array = array('asset' => array('key' => 'snippets/codeinspire-wishlist-app.liquid', 'value' => $snippet));
 
-        $shop->api()->rest('PUT', '/admin/themes/'.$activeThemeId.'/assets.json', $array);
+        // $shop->api()->rest('PUT', '/admin/themes/'.$activeThemeId.'/assets.json', $array);
 
         // save data into database
 
-        Setting::updateOrCreate(
-            ['shop_id' => $shop->name ],
-            ['activated' => true]
-        );
+        // Setting::updateOrCreate(
+        //     ['shop_id' => $shop->name ],
+        //     ['activated' => true]
+        // );
 
-        return ['message' => 'Theme setup succesfully'];
+        // return ['message' => 'Theme setup succesfully'];
         
         // $shop = Auth::user();
         // $domain = $shop->getDomain()->toNative();
@@ -73,7 +98,5 @@ class Shopify {
         // return $customer->save(
         //     true, // Update Object
         // );
-    }
-}
-
-?>
+//     }
+// }

@@ -7,14 +7,15 @@ use App\Models\Customers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Http;
 
 class CustomersController extends Controller
 {
-    private $shopifyClient;
+    // private $shopifyClient;
 
-    public function __construct(Shopify $shopifyClient){
-        $this->shopifyClient = $shopifyClient;
-    }
+    // public function __construct(Shopify $shopifyClient){
+    //     $this->shopifyClient = $shopifyClient;
+    // }
 
     
     public function appDashboard() {
@@ -24,7 +25,10 @@ class CustomersController extends Controller
     
     public function addShopifyCustomer(){
         Log::info("here...");
-        dd("yes here...");
+        // dd("yes here...");
+        // dd(Http::get('c4a9f8950a14ecbf3ef0e5b6960c459f:ca680dde6f22e45d827b0f0dbf7a12fa@new-custom-app-test.myshopify.com/admin/api/2022-07/customers.json'));
+        dd(Shopify::rest()->get('products'));
+        return response()->json('asd');
     }
 
     /**
