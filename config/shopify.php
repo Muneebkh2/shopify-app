@@ -1,61 +1,61 @@
 <?php
 
-return [
+// return [
 
     
-    'credentials' => [
+//     'credentials' => [
 
-        /*
-         * The API key from private app credentials.
-         */
-        'api_key' => env('SHOPIFY_API_KEY', ''),
+//         /*
+//          * The API key from private app credentials.
+//          */
+//         'api_key' => env('SHOPIFY_API_KEY', ''),
 
-        /*
-         * The password from private app credentials.
-         */
-        'password' => env('SHOPIFY_PASSWORD', ''),
+//         /*
+//          * The password from private app credentials.
+//          */
+//         'password' => env('SHOPIFY_PASSWORD', ''),
 
-        /*
-         * The shopify domain for your shop.
-         */
-        'domain' => env('SHOPIFY_DOMAIN', ''),
+//         /*
+//          * The shopify domain for your shop.
+//          */
+//         'domain' => env('SHOPIFY_DOMAIN', ''),
 
-        /*
-         * The shopify api version.
-         */
-        'api_version' => env('SHOPIFY_API_VERSION', '2021-01'),
+//         /*
+//          * The shopify api version.
+//          */
+//         'api_version' => env('SHOPIFY_API_VERSION', '2021-01'),
 
-    ],
+//     ],
 
-    'webhooks' => [
+//     'webhooks' => [
 
-        /*
-         * The webhook secret provider to use.
-         */
-        'secret_provider' => \Signifly\Shopify\Webhooks\ConfigSecretProvider::class,
+//         /*
+//          * The webhook secret provider to use.
+//          */
+//         'secret_provider' => \Signifly\Shopify\Webhooks\ConfigSecretProvider::class,
 
-        /*
-         * The shopify webhook secret.
-         */
-        'secret' => env('SHOPIFY_WEBHOOK_SECRET'),
+//         /*
+//          * The shopify webhook secret.
+//          */
+//         'secret' => env('SHOPIFY_WEBHOOK_SECRET'),
 
-    ],
+//     ],
 
-    'exceptions' => [
+//     'exceptions' => [
 
-        /*
-         * Whether to include the validation errors in the exception message.
-         */
-        'include_validation_errors' => false,
+//         /*
+//          * Whether to include the validation errors in the exception message.
+//          */
+//         'include_validation_errors' => false,
 
-    ],
-];
-
-// return [
-//     'store_url' => env('SHOPIFY_APP_HOST_NAME'),
-//     'api'       => [
-//         'version' => env('SHOPIFY_API_VERSION', '2022-07'),
-//         'key'     => env('SHOPIFY_API_KEY'),
-//         'token'   => env('SHOPIFY_API_SECRET')
 //     ],
 // ];
+
+return [
+    'store_url' => env('SHOPIFY_APP_HOST_NAME'),
+    'api'       => [
+        'version' => env('SHOPIFY_API_VERSION', '2022-07'),
+        'key'     => env('SHOPIFY_API_KEY'),
+        'token'   => env('SHOPIFY_API_SECRET')
+    ],
+];
