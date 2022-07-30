@@ -36,9 +36,24 @@ class CustomersController extends Controller
      */
     public function store(Request $request)
     {
-        // return dd("adsas");
         Log::info('from store method..');
         Log::info('Request Array:', $request->all());
+        $rawRequestData = json_decode($request->get('rawRequest'), true);
+        Log::debug('rawRequestData Array:', [$rawRequestData]);
+        $dataPayLoad = [
+            "first_name" => $rawRequestData['q3_name']['first'],
+            "last_name" => $rawRequestData['q3_name']['last'],
+            "company" => $rawRequestData['q5_company'],
+            "email" => $rawRequestData['q4_email'],
+            "phone_number" => $rawRequestData['q7_phoneNumber']['full'],
+            "street_address" => $rawRequestData['q8_address']['addr_line1'],
+            "street_address_2" => $rawRequestData['q8_address']['addr_line2'],
+            "city" => $rawRequestData['q8_address']['city'],
+            "state" => $rawRequestData['q8_address']['state'],
+            "zip_code" => $rawRequestData['q8_address']['postal']
+        ];
+        Log::debug('DataPayLoad: Array:', [$dataPayLoad]);
+        
         // return;
     }
 
