@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Client\Shopify;
+// use App\Client\Shopify;
 use App\Models\Customers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Http;
+// use Illuminate\Support\Facades\Http;
+use Signifly\Shopify\Shopify;
 
 class CustomersController extends Controller
 {
@@ -25,9 +26,18 @@ class CustomersController extends Controller
     
     public function addShopifyCustomer(){
         Log::info("here...");
+        $shopify = new Shopify(
+            env('SHOPIFY_API_KEY'),
+            env('SHOPIFY_PASSWORD'),
+            env('SHOPIFY_DOMAIN'),
+            env('SHOPIFY_API_VERSION')
+        );
+        dd($shopify->get('customer.json'));
+        dd($shopify->getProductsCount());
+        
         // dd("yes here...");
         // dd(Http::get('c4a9f8950a14ecbf3ef0e5b6960c459f:ca680dde6f22e45d827b0f0dbf7a12fa@new-custom-app-test.myshopify.com/admin/api/2022-07/customers.json'));
-        dd(Shopify::rest()->get('products'));
+        // dd(Shopify::rest()->get('products'));
         return response()->json('asd');
     }
 
