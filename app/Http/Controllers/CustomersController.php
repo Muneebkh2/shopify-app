@@ -2,12 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Client\Shopify;
 use App\Models\Customers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class CustomersController extends Controller
 {
+    private $shopifyClient;
+
+    public function __construct(Shopify $shopifyClient){
+        $this->shopifyClient = $shopifyClient;
+    }
+
     public function appDashboard() {
         $allCustomers = Customers::all()->sortByDesc("created_at");
         return view('welcome', compact('allCustomers'));
@@ -62,7 +69,9 @@ class CustomersController extends Controller
         Log::debug('DataPayLoad: Array:', [$dataPayLoad]);
 
         // dd($dataPayLoad);
-        return Customers::create($dataPayLoad);
+        Customers::create($dataPayLoad);
+
+        $this->shopifyClient->saveCustomer($dataPayLoad);
     }
 
     /**
