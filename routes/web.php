@@ -14,8 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::post('create', 'App\Http\Controllers\CustomersController@store');
+Route::get('/', 'App\Http\Controllers\CustomersController@appDashboard')
+->middleware(['verify.shopify'])->name('home');
 
-Route::get('/', function () {
-    return view('welcome');
-})->middleware(['verify.shopify'])->name('home');
+// Route::get('/', function () {
+//     return view('welcome');
+// })->middleware(['verify.shopify'])->name('home');
