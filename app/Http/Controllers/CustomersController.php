@@ -6,19 +6,57 @@ use App\Client\Shopify;
 use App\Models\Customers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Http;
 
 class CustomersController extends Controller
 {
+    private $shopifyClient;
     
+    public function __construct(Shopify $shopifyClient)
+    {
+        $this->shopifyClient = $shopifyClient;
+    }
+
     public function appDashboard() {
         $allCustomers = Customers::all()->sortByDesc("created_at");
         return view('welcome', compact('allCustomers'));
     }
     
-    public function addShopifyCustomer(){
+    public function addCustomersToShopify(Request $request){
+        $dataPayLoad = $request->all();
+        // dd($dataPayLoad);
+        $formattedData = ["customer" => [
+            "first_name" => $dataPayLoad['first_name'],
+            "last_name" => $dataPayLoad['last_name'],
+            "email" => $dataPayLoad['email'],
+            "phone" => $dataPayLoad['phone_number'],
+            "verified_email" => false,
+            "company" => $dataPayLoad['company'],
+            "address" => [
+                "address1" => $dataPayLoad['street_address'],
+                "city" => $dataPayLoad['city'],
+                "province" => $dataPayLoad['state'],
+                "zip" => $dataPayLoad['zip_code'],
+                "last_name" => $dataPayLoad['last_name'],
+                "first_name" => $dataPayLoad['first_name'],
+                "country" => $dataPayLoad['country']
+            ]
+        ]]; 
         
+        // $response = Http::withHeaders([
+        //     'X-Shopify-Access-Token' => config('shopify.api.access_token')
+        // ])->post("https://".config('shopify.store_url')."/admin/api/2022-07/customers.json", $formattedData);
+
+        // dd($response->body());
+
+
+
+        //        curl -X GET "https://new-custom-app-test.myshopify.com/admin/api/2022-07/customers.json" \
+// -H "X-Shopify-Access-Token: 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"
+
+// curl -d '{"customer":{"first_name":"Steve","last_name":"Lastnameson","email":"steve.lastnameson@example.com","phone":"+15142546011","verified_email":true,"addresses":[{"address1":"123 Oak St","city":"Ottawa","province":"ON","phone":"555-1212","zip":"123 ABC","last_name":"Lastnameson","first_name":"Mother","country":"CA"}]}}' \
+// -X POST "https://new-custom-app-test.myshopify.com/admin/api/2022-07/customers.json" \
+// -H "X-Shopify-Access-Token: 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" \
+// -H "Content-Type: application/json"
         // Log::info("here...");
         // $url = "https://new-custom-app-test.myshopify.com/admin/api/2022-07/customers.json";
         // $encodedToken = base64_encode('c4a9f8950a14ecbf3ef0e5b6960c459f:ca680dde6f22e45d827b0f0dbf7a12fa');
@@ -46,6 +84,8 @@ class CustomersController extends Controller
         // dd("yes here...");
         // dd(Http::get('c4a9f8950a14ecbf3ef0e5b6960c459f:ca680dde6f22e45d827b0f0dbf7a12fa@new-custom-app-test.myshopify.com/admin/api/2022-07/customers.json'));
         // dd(Shopify::rest()->get('products'));
+
+        
         return response()->json('test');
     }
 
@@ -97,11 +137,17 @@ class CustomersController extends Controller
         ];
         Log::debug('DataPayLoad: Array:', [$dataPayLoad]);
 
-        // dd($dataPayLoad);
         Customers::create($dataPayLoad);
 
-        // $this->shopifyClient->saveCustomer($dataPayLoad);
-        return Redirect::route('shopify-customer-create')->with('data', $dataPayLoad);
+        $this->shopifyClient->saveCustomer($dataPayLoad);
+
+        return response()->json([
+            'Data' => [
+                'success' => true,
+                'message' => 'Data Successfully Added.'
+                ]
+            ]);
+        //Redirect::route('shopify-customer-create')->with('data', $dataPayLoad);
     }
 
     /**

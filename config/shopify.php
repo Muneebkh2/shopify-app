@@ -1,61 +1,14 @@
 <?php
 
-// return [
-
-    
-//     'credentials' => [
-
-//         /*
-//          * The API key from private app credentials.
-//          */
-//         'api_key' => env('SHOPIFY_API_KEY', ''),
-
-//         /*
-//          * The password from private app credentials.
-//          */
-//         'password' => env('SHOPIFY_PASSWORD', ''),
-
-//         /*
-//          * The shopify domain for your shop.
-//          */
-//         'domain' => env('SHOPIFY_DOMAIN', ''),
-
-//         /*
-//          * The shopify api version.
-//          */
-//         'api_version' => env('SHOPIFY_API_VERSION', '2021-01'),
-
-//     ],
-
-//     'webhooks' => [
-
-//         /*
-//          * The webhook secret provider to use.
-//          */
-//         'secret_provider' => \Signifly\Shopify\Webhooks\ConfigSecretProvider::class,
-
-//         /*
-//          * The shopify webhook secret.
-//          */
-//         'secret' => env('SHOPIFY_WEBHOOK_SECRET'),
-
-//     ],
-
-//     'exceptions' => [
-
-//         /*
-//          * Whether to include the validation errors in the exception message.
-//          */
-//         'include_validation_errors' => false,
-
-//     ],
-// ];
-
 return [
     'store_url' => env('SHOPIFY_APP_HOST_NAME'),
     'api'       => [
-        'version' => env('SHOPIFY_API_VERSION', '2022-07'),
+        'access_token' => env('SHOPIFY_API_ACCESS_TOKEN'),
         'key'     => env('SHOPIFY_API_KEY'),
         'token'   => env('SHOPIFY_API_SECRET')
+    ],
+    'app'       => [
+        'key'     => env('SHOPIFY_APP_KEY'),
+        'token'   => env('SHOPIFY_APP_SECRET')
     ],
 ];

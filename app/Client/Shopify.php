@@ -2,101 +2,38 @@
 
 namespace App\Client;
 
-
-use Shopify\Clients\Graphql;
-use Shopify\Clients\Rest;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class Shopify
 {
-    public static function graphql(): Graphql
-    {
-        return new Graphql(self::getStoreUrl());
-    }
+    public function saveCustomer($dataPayLoad){
+        $accessToken = config('shopify.api.access_token');
+        $storeUrl = config('shopify.store_url');
 
-    public static function rest(): Rest
-    {
-        return new Rest(self::getStoreUrl());
-    }
+        $formattedData = ["customer" => [
+            "first_name" => $dataPayLoad['first_name'],
+            "last_name" => $dataPayLoad['last_name'],
+            "email" => $dataPayLoad['email'],
+            "phone" => $dataPayLoad['phone_number'],
+            "verified_email" => false,
+            "company" => $dataPayLoad['company'],
+            "address" => [
+                "address1" => $dataPayLoad['street_address'],
+                "city" => $dataPayLoad['city'],
+                "province" => $dataPayLoad['state'],
+                "zip" => $dataPayLoad['zip_code'],
+                "last_name" => $dataPayLoad['last_name'],
+                "first_name" => $dataPayLoad['first_name'],
+                "country" => isset($dataPayLoad['country']) ?? ''
+            ]
+        ]]; 
 
-    private static function getStoreUrl(): string
-    {
-        return config('shopify.store_url');
+        $response = Http::withHeaders([
+            'X-Shopify-Access-Token' => $accessToken
+        ])->post("https://".$storeUrl."/admin/api/2022-07/customers.json", $formattedData);
+
+        Log::info("Successfully pushed customer to the store.", [$response->json()]);
+
     }
 }
-
-
-
-
-// use Illuminate\Support\Facades\Auth;
-// use Illuminate\Support\Facades\Log;
-// use Shopify\Rest\Admin2022_07\Customer;
-// use Shopify\Utils;
-
-// class Shopify {
-//     public function saveCustomer($customerData) {
-
-        // $shop = Auth::user();
-
-        // $shop->api()->rest('POST', '/admin/api/2022-07/customers.json', $customerData);
-
-        // get active theme id
-        // $activeThemeId = "";
-        // foreach($themes['body']->container['themes'] as $theme){
-        //     if($theme['role'] == "main"){
-        //         $activeThemeId = $theme['id'];
-        //         dd($activeThemeId);
-        //     }
-        // }
-
-        // $snippet = "Your snippet code updated";
-
-        // // Data to pass to our rest api request
-        // $array = array('asset' => array('key' => 'snippets/codeinspire-wishlist-app.liquid', 'value' => $snippet));
-
-        // $shop->api()->rest('PUT', '/admin/themes/'.$activeThemeId.'/assets.json', $array);
-
-        // save data into database
-
-        // Setting::updateOrCreate(
-        //     ['shop_id' => $shop->name ],
-        //     ['activated' => true]
-        // );
-
-        // return ['message' => 'Theme setup succesfully'];
-        
-        // $shop = Auth::user();
-        // $domain = $shop->getDomain()->toNative();
-        // $shopApi = $shop->api()->rest('GET', '/admin/shop.json')['body']['shop'];
-
-        // Log::info("Shop {$domain}'s object:" . json_encode($shop));
-        // Log::info("Shop {$domain}'s API objct:" . json_encode($shopApi));
-        // return;
-        
-        // $this->test_session = Utils::loadCurrentSession(
-        //     $requestHeaders,
-        //     $requestCookies,
-        //     $isOnline
-        // );
-        // $customer = new Customer($this->test_session);
-        // $customer->first_name = "Steve";
-        // $customer->last_name = "Lastnameson";
-        // $customer->email = "steve.lastnameson@example.com";
-        // $customer->phone = "+15142546011";
-        // $customer->verified_email = true;
-        // $customer->addresses = [
-        //     [
-        //         "address1" => "123 Oak St",
-        //         "city" => "Ottawa",
-        //         "province" => "ON",
-        //         "phone" => "555-1212",
-        //         "zip" => "123 ABC",
-        //         "last_name" => "Lastnameson",
-        //         "first_name" => "Mother",
-        //         "country" => "CA"
-        //     ]
-        // ];
-        // return $customer->save(
-        //     true, // Update Object
-        // );
-//     }
-// }
