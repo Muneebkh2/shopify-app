@@ -15,7 +15,7 @@ class Shopify
             "first_name" => $dataPayLoad['first_name'],
             "last_name" => $dataPayLoad['last_name'],
             "email" => $dataPayLoad['email'],
-            "phone" => $dataPayLoad['phone_number'],
+            "phone" => "+1". preg_replace( '/[^0-9]/', '', $dataPayLoad['phone_number']),
             "verified_email" => false,
             "company" => $dataPayLoad['company'],
             "address" => [
